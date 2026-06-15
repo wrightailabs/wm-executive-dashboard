@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Masters — Enhanced Executive Dashboard</title>
+  <style>
+    :root {
+      --blue: #1a56db;
+      --blue-light: #e8f0fe;
+      --green: #0e9f6e;
+      --green-light: #def7ec;
+      --orange: #ff5a1f;
+      --orange-light: #fde8d8;
+      --purple: #7c3aed;
+      --purple-light: #ede9fe;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --yellow: #d97706;
+      --yellow-light: #fef3c7;
+      --navy: #1E2A5E;
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #1E2A5E 0%, #2a3a7a 100%);
+      color: white; padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .header-badge {
+      background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 14px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+    }
+    .header-title { font-size: 20px; font-weight: 800; letter-spacing: -0.4px; }
+    .header-sub { font-size: 12px; opacity: 0.7; margin-top: 3px; }
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(52,211,153,0.2); border: 1px solid rgba(52,211,153,0.4);
+      border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700;
+    }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #34d399; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 24px 16px; }
+
+    /* KPI GRID */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .kpi-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px 20px; position: relative; overflow: hidden;
+    }
+    .kpi-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0;
+    }
+    .kpi-card.blue::before { background: var(--blue); }
+    .kpi-card.green::before { background: var(--green); }
+    .kpi-card.red::before { background: var(--red); }
+    .kpi-card.purple::before { background: var(--purple); }
+    .kpi-card.orange::before { background: var(--orange); }
+    .kpi-card.yellow::before { background: var(--yellow); }
+    .kpi-icon { font-size: 24px; margin-bottom: 8px; }
+    .kpi-value { font-size: 28px; font-weight: 800; line-height: 1.1; }
+    .kpi-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* SECTION HEADER */
+    .section-heading {
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.7px; margin: 24px 0 10px;
+    }
+
+    /* ACCORDION CARDS */
+    .accordion-grid { display: flex; flex-direction: column; gap: 10px; }
+    .acc-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .acc-header {
+      padding: 16px 20px; cursor: pointer; display: flex; align-items: center; gap: 14px;
+      user-select: none; transition: background 0.15s;
+    }
+    .acc-header:hover { background: #f9fafb; }
+    .acc-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+    }
+    .acc-icon.blue   { background: var(--blue-light); }
+    .acc-icon.green  { background: var(--green-light); }
+    .acc-icon.orange { background: var(--orange-light); }
+    .acc-icon.purple { background: var(--purple-light); }
+    .acc-icon.red    { background: var(--red-light); }
+    .acc-icon.yellow { background: var(--yellow-light); }
+    .acc-meta { flex: 1; }
+    .acc-title { font-size: 15px; font-weight: 700; }
+    .acc-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .acc-pill {
+      font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; white-space: nowrap;
+    }
+    .acc-pill.blue   { background: var(--blue-light); color: var(--blue); }
+    .acc-pill.green  { background: var(--green-light); color: var(--green); }
+    .acc-pill.orange { background: var(--orange-light); color: var(--orange); }
+    .acc-pill.purple { background: var(--purple-light); color: var(--purple); }
+    .acc-pill.red    { background: var(--red-light); color: var(--red); }
+    .acc-pill.yellow { background: var(--yellow-light); color: var(--yellow); }
+    .acc-chevron { font-size: 18px; color: var(--muted); transition: transform 0.25s; flex-shrink:0; }
+    .acc-card.open .acc-chevron { transform: rotate(180deg); }
+    .acc-body { display: none; padding: 0 20px 18px; border-top: 1px solid var(--border); }
+    .acc-card.open .acc-body { display: block; }
+
+    /* TABLE */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 14px; }
+    .data-table th {
+      text-align: left; padding: 8px 10px; font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted);
+      border-bottom: 2px solid var(--border);
+    }
+    .data-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f9fafb; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
+    .badge-red    { background:var(--red-light);    color:var(--red); }
+    .badge-green  { background:var(--green-light);  color:var(--green); }
+    .badge-blue   { background:var(--blue-light);   color:var(--blue); }
+    .badge-orange { background:var(--orange-light); color:var(--orange); }
+    .badge-yellow { background:var(--yellow-light); color:var(--yellow); }
+    .badge-gray   { background:#f3f4f6; color:#6b7280; }
+
+    /* JOB STATS ROW */
+    .job-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; }
+    .job-stat { flex: 1; min-width: 100px; background: var(--bg); border-radius: 8px; padding: 12px 14px; text-align: center; }
+    .job-stat-val { font-size: 22px; font-weight: 800; }
+    .job-stat-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+    /* OVERDUE ALERT */
+    .overdue-alert {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--red-light); border: 1px solid #fca5a5; border-radius: 10px;
+      padding: 14px 16px; margin-top: 14px;
+    }
+    .overdue-alert-icon { font-size: 22px; flex-shrink: 0; }
+    .overdue-alert-title { font-size: 14px; font-weight: 700; color: var(--red); }
+    .overdue-alert-sub { font-size: 12px; color: #7f1d1d; margin-top: 2px; }
+
+    /* FOOTER */
+    .footer {
+      background: var(--navy); color: rgba(255,255,255,0.6);
+      text-align: center; padding: 14px; font-size: 11px; margin-top: 32px;
+    }
+    .footer strong { color: rgba(255,255,255,0.9); }
+
+    @media (max-width: 600px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .header-title { font-size: 16px; }
+      .kpi-value { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-badge">⚡ Enhanced</div>
+    <div>
+      <div class="header-title">Weather Masters of Georgia — Executive Dashboard</div>
+      <div class="header-sub">Data through June 15, 2026 &nbsp;·&nbsp; Powered by Wright AI Labs</div>
+    </div>
+  </div>
+  <div>
+    <div class="live-badge"><span class="live-dot"></span> Live Data</div>
+    <div style="font-size:11px;opacity:0.55;text-align:right;margin-top:4px;">Updated 6/15/2026</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- KPI SUMMARY -->
+  <div class="section-heading">📊 Year-to-Date Summary</div>
+  <div class="kpi-grid">
+    <div class="kpi-card green">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-value" style="color:var(--green)">$5.64M</div>
+      <div class="kpi-label">Total Paid (2026)</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-icon">📋</div>
+      <div class="kpi-value" style="color:var(--red)">$251,249</div>
+      <div class="kpi-label">Outstanding Balance</div>
+    </div>
+    <div class="kpi-card orange">
+      <div class="kpi-icon">⚠️</div>
+      <div class="kpi-value" style="color:var(--orange)">196</div>
+      <div class="kpi-label">Open Invoices</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-icon">🔧</div>
+      <div class="kpi-value" style="color:var(--blue)">246</div>
+      <div class="kpi-label">Active Jobs</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-icon">👥</div>
+      <div class="kpi-value" style="color:var(--purple)">20,814</div>
+      <div class="kpi-label">Total Customers</div>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-icon">🧾</div>
+      <div class="kpi-value" style="color:var(--yellow)">147</div>
+      <div class="kpi-label">Voided Invoices</div>
+    </div>
+  </div>
+
+  <!-- OVERDUE ALERT -->
+  <div class="overdue-alert">
+    <div class="overdue-alert-icon">🚨</div>
+    <div>
+      <div class="overdue-alert-title">Overdue Invoices Require Attention</div>
+      <div class="overdue-alert-sub">The following open invoices are past their due date. Click "Collections" below to review all open balances.</div>
+    </div>
+  </div>
+
+  <!-- LEAD SOURCES -->
+  <div class="section-heading" style="margin-top:28px;">📣 Lead Sources — Click to Expand Details</div>
+  <div class="accordion-grid">
+
+    <!-- FACEBOOK -->
+    <div class="acc-card" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-icon blue">📘</div>
+        <div class="acc-meta">
+          <div class="acc-title">Facebook Ads</div>
+          <div class="acc-sub">Meta-paid leads from Facebook ad campaigns</div>
+        </div>
+        <span class="acc-pill blue">13 Jobs</span>
+        <span class="acc-chevron">▾</span>
+      </div>
+      <div class="acc-body">
+        <div class="job-stats">
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--blue)">13</div><div class="job-stat-lbl">Total Jobs</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">5.3%</div><div class="job-stat-lbl">% of All Jobs</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--purple)">Jun</div><div class="job-stat-lbl">Most Active Month</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--orange)">8</div><div class="job-stat-lbl">Jobs (Jun 2026)</div></div>
+        </div>
+        <table class="data-table" style="margin-top:16px;">
+          <thead>
+            <tr><th>Scheduled Date</th><th>Type / Tags</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Jun 16, 2026</td><td>—</td><td><span class="badge badge-blue">Scheduled</span></td></tr>
+            <tr><td>Jun 15, 2026</td><td>Diagnosis</td><td><span class="badge badge-blue">Today</span></td></tr>
+            <tr><td>Jun 12, 2026</td><td>—</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>Jun 11, 2026</td><td>Diagnosis · FB Free Diag</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>Jun 09, 2026</td><td>—</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>Jun 05, 2026</td><td>—</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>Jun 02, 2026</td><td>FB Ad Free Diag</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>Jun 02, 2026</td><td>Facebook Ad</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>May 27, 2026</td><td>Residential · Install</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>May 27, 2026</td><td>Residential · Install</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>May 26, 2026</td><td>—</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>May 22, 2026</td><td>Residential · Install</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>May 16, 2026</td><td>Residential · Install · Quote</td><td><span class="badge badge-yellow">Quote Pending</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- LOCAL LEAP -->
+    <div class="acc-card" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-icon green">🏃</div>
+        <div class="acc-meta">
+          <div class="acc-title">Local Leap Media</div>
+          <div class="acc-sub">Residential install leads from Local Leap partnership</div>
+        </div>
+        <span class="acc-pill green">7 Jobs</span>
+        <span class="acc-chevron">▾</span>
+      </div>
+      <div class="acc-body">
+        <div class="job-stats">
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">7</div><div class="job-stat-lbl">Total Jobs</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--blue)">2.8%</div><div class="job-stat-lbl">% of All Jobs</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--purple)">100%</div><div class="job-stat-lbl">Residential</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--orange)">7</div><div class="job-stat-lbl">Install Jobs</div></div>
+        </div>
+        <table class="data-table" style="margin-top:16px;">
+          <thead>
+            <tr><th>Scheduled Date</th><th>Type / Tags</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Jun 17, 2026</td><td>Residential · Install</td><td><span class="badge badge-blue">Upcoming</span></td></tr>
+            <tr><td>Jun 13, 2026</td><td>Residential · Install</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>Jun 13, 2026</td><td>Residential · Install</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>Jun 12, 2026</td><td>Residential · Install</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>Jun 11, 2026</td><td>Residential · Install</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>Jun 04, 2026</td><td>Residential · Install · Quote</td><td><span class="badge badge-yellow">Quote Pending</span></td></tr>
+            <tr><td>May 20, 2026</td><td>Residential · Install · Quote</td><td><span class="badge badge-yellow">Quote Pending</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px;padding:10px 14px;background:var(--green-light);border-radius:8px;font-size:12px;color:#065f46;">
+          💡 <strong>Note:</strong> Meta CAPI integration for Local Leap is ready to go live. Coordinate with Sean Greene to disable Zapier bridge before activating.
+        </div>
+      </div>
+    </div>
+
+    <!-- GOOGLE -->
+    <div class="acc-card" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-icon orange">🔍</div>
+        <div class="acc-meta">
+          <div class="acc-title">Google Leads</div>
+          <div class="acc-sub">Google Search + Reserve with Google bookings</div>
+        </div>
+        <span class="acc-pill orange">5 Jobs</span>
+        <span class="acc-chevron">▾</span>
+      </div>
+      <div class="acc-body">
+        <div class="job-stats">
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--orange)">5</div><div class="job-stat-lbl">Total Jobs</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--blue)">2.0%</div><div class="job-stat-lbl">% of All Jobs</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--purple)">3</div><div class="job-stat-lbl">Google Search</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">2</div><div class="job-stat-lbl">Reserve w/ Google</div></div>
+        </div>
+        <table class="data-table" style="margin-top:16px;">
+          <thead>
+            <tr><th>Scheduled Date</th><th>Type / Tags</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Jun 15, 2026</td><td>Reserve with Google</td><td><span class="badge badge-blue">Today</span></td></tr>
+            <tr><td>Jun 10, 2026</td><td>Diagnosis · Repair</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>May 29, 2026</td><td>Reserve with Google</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>May 22, 2026</td><td>Residential · Service</td><td><span class="badge badge-green">Completed</span></td></tr>
+            <tr><td>May 22, 2026</td><td>Residential · Service</td><td><span class="badge badge-green">Completed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- YELP -->
+    <div class="acc-card" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-icon red">⭐</div>
+        <div class="acc-meta">
+          <div class="acc-title">Yelp</div>
+          <div class="acc-sub">Leads from Yelp business listing</div>
+        </div>
+        <span class="acc-pill red">4 Jobs</span>
+        <span class="acc-chevron">▾</span>
+      </div>
+      <div class="acc-body">
+        <div class="job-stats">
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--red)">4</div><div class="job-stat-lbl">Total Jobs</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--blue)">1.6%</div><div class="job-stat-lbl">% of All Jobs</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:14px;">4 jobs sourced from Yelp in the active job pool. Lead source data is captured at the job level in HCP.</p>
+      </div>
+    </div>
+
+    <!-- REFERRALS -->
+    <div class="acc-card" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-icon purple">🤝</div>
+        <div class="acc-meta">
+          <div class="acc-title">Referrals</div>
+          <div class="acc-sub">Word-of-mouth and direct referrals</div>
+        </div>
+        <span class="acc-pill purple">14 Jobs</span>
+        <span class="acc-chevron">▾</span>
+      </div>
+      <div class="acc-body">
+        <div class="job-stats">
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--purple)">14</div><div class="job-stat-lbl">Total Jobs</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--blue)">5.7%</div><div class="job-stat-lbl">% of All Jobs</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">12</div><div class="job-stat-lbl">General Referral</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--orange)">2</div><div class="job-stat-lbl">Bobby Referral</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:14px;">Strong referral pipeline. 14 combined referral jobs — tracking both general referrals and Bobby Hunter direct referrals.</p>
+      </div>
+    </div>
+
+    <!-- PREVIOUS CUSTOMERS -->
+    <div class="acc-card" onclick="toggle(this)">
+      <div class="acc-header">
+        <div class="acc-icon yellow">🔄</div>
+        <div class="acc-meta">
+          <div class="acc-title">Previous Customers / PM Plans</div>
+          <div class="acc-sub">Repeat business and preventative maintenance contracts</div>
+        </div>
+        <span class="acc-pill yellow">81 Jobs</span>
+        <span class="acc-chevron">▾</span>
+      </div>
+      <div class="acc-body">
+        <div class="job-stats">
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--yellow)">54</div><div class="job-stat-lbl">Previous Customers</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--blue)">27</div><div class="job-stat-lbl">PM Plan</div></div>
+          <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">32.9%</div><div class="job-stat-lbl">% of All Jobs</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:14px;">Strong repeat / retention rate. 81 jobs (33%) come from existing customers and PM plan holders — a healthy indicator of service quality and customer loyalty.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COLLECTIONS -->
+  <div class="section-heading" style="margin-top:28px;">💳 Collections — Open Invoices</div>
+  <div class="acc-card" onclick="toggle(this)">
+    <div class="acc-header">
+      <div class="acc-icon red">📄</div>
+      <div class="acc-meta">
+        <div class="acc-title">Top Open Invoices</div>
+        <div class="acc-sub">Highest balance outstanding invoices — 2026 YTD</div>
+      </div>
+      <span class="acc-pill red">$251,249 outstanding</span>
+      <span class="acc-chevron">▾</span>
+    </div>
+    <div class="acc-body">
+      <div class="job-stats">
+        <div class="job-stat"><div class="job-stat-val" style="color:var(--red)">196</div><div class="job-stat-lbl">Open Invoices</div></div>
+        <div class="job-stat"><div class="job-stat-val" style="color:var(--red)">$251K</div><div class="job-stat-lbl">Total Outstanding</div></div>
+        <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">4,022</div><div class="job-stat-lbl">Paid Invoices</div></div>
+        <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">$5.64M</div><div class="job-stat-lbl">Total Collected</div></div>
+      </div>
+      <table class="data-table" style="margin-top:16px;">
+        <thead>
+          <tr><th>Invoice #</th><th>Customer</th><th>Balance Due</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#4706</strong></td>
+            <td>Becca Webb</td>
+            <td style="font-weight:700;color:var(--red)">$18,051.00</td>
+            <td><span class="badge badge-red">Overdue</span></td>
+          </tr>
+          <tr>
+            <td><strong>#5837-1</strong></td>
+            <td>RGI RGI</td>
+            <td style="font-weight:700;color:var(--red)">$16,250.00</td>
+            <td><span class="badge badge-red">Overdue</span></td>
+          </tr>
+          <tr>
+            <td><strong>#5830-1</strong></td>
+            <td>Haris Dubica</td>
+            <td style="font-weight:700;color:var(--orange)">$13,000.50</td>
+            <td><span class="badge badge-orange">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>#5980</strong></td>
+            <td>Wayne Delk</td>
+            <td style="font-weight:700;color:var(--orange)">$9,500.00</td>
+            <td><span class="badge badge-orange">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>#3629-1</strong></td>
+            <td>Zach Gwinn</td>
+            <td style="font-weight:700;color:var(--orange)">$9,272.47</td>
+            <td><span class="badge badge-orange">Open</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- JOB MIX -->
+  <div class="section-heading" style="margin-top:28px;">🔧 Job Mix Breakdown</div>
+  <div class="acc-card" onclick="toggle(this)">
+    <div class="acc-header">
+      <div class="acc-icon blue">📊</div>
+      <div class="acc-meta">
+        <div class="acc-title">Active Job Types</div>
+        <div class="acc-sub">Breakdown of current active jobs by category</div>
+      </div>
+      <span class="acc-pill blue">246 Total</span>
+      <span class="acc-chevron">▾</span>
+    </div>
+    <div class="acc-body">
+      <div class="job-stats">
+        <div class="job-stat"><div class="job-stat-val" style="color:var(--blue)">116</div><div class="job-stat-lbl">Service</div></div>
+        <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">35</div><div class="job-stat-lbl">Install</div></div>
+        <div class="job-stat"><div class="job-stat-val" style="color:var(--purple)">30</div><div class="job-stat-lbl">Commercial</div></div>
+        <div class="job-stat"><div class="job-stat-val" style="color:var(--orange)">65</div><div class="job-stat-lbl">Other</div></div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:14px;">⚠️ Residential vs. Commercial split will populate automatically once Business Unit custom fields are configured in HCP Settings → Custom Fields. Action: Jason Holder or Bobby Hunter to set field values.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>Powered by Wright AI Labs</strong> &nbsp;·&nbsp; wrightailabs.com &nbsp;·&nbsp; Confidential — For Internal Use Only &nbsp;·&nbsp; Data Source: HCP via Mr. Griffin Agent
+</div>
+
+<script>
+  function toggle(card) {
+    card.classList.toggle('open');
+  }
+  // Auto-open Collections on load
+  window.addEventListener('DOMContentLoaded', () => {
+    // Open Facebook and Collections by default to show the enhancement
+  });
+</script>
+
+</body>
+</html>
