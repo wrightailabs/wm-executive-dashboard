@@ -328,15 +328,18 @@
     <div class="kpi-grid">
       <div class="kpi-card green">
         <div class="kpi-icon">💰</div>
-        <div class="kpi-value" style="color:var(--green)">$5.64M</div>
-        <div class="kpi-label">Total Paid YTD</div>
-        <div class="kpi-note">Jan 1 – Jun 15, 2026</div>
+        <div id="paid-value" class="kpi-value" style="color:var(--green)">$996K</div>
+        <div id="paid-label" class="kpi-label">Total Paid (2026 YTD)</div>
+        <div id="paid-note" class="kpi-note">Jan 1 – Jun 12, 2026 · 232 invoices</div>
+        <div style="margin-top:8px;">
+          <button id="paid-toggle" onclick="togglePaidView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;">ALL TIME ↔</button>
+        </div>
       </div>
       <div class="kpi-card blue">
         <div class="kpi-icon">🧾</div>
-        <div class="kpi-value" style="color:var(--blue)">4,022</div>
+        <div id="inv-count" class="kpi-value" style="color:var(--blue)">232</div>
         <div class="kpi-label">Invoices Paid</div>
-        <div class="kpi-note">Avg $1,403 each</div>
+        <div id="inv-note" class="kpi-note">Avg $4,293 each</div>
       </div>
       <div class="kpi-card orange">
         <div class="kpi-icon">🔧</div>
@@ -559,7 +562,7 @@
         <div class="job-stat"><div class="job-stat-val" style="color:var(--orange)">137</div><div class="job-stat-lbl">Overdue</div></div>
         <div class="job-stat"><div class="job-stat-val" style="color:var(--orange)">$170K</div><div class="job-stat-lbl">Past Due Amount</div></div>
         <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">4,022</div><div class="job-stat-lbl">Paid Invoices</div></div>
-        <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">$5.64M</div><div class="job-stat-lbl">Total Collected</div></div>
+        <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">$996K</div><div class="job-stat-lbl">Collected (2026 YTD)</div></div>
       </div>
       <table class="data-table">
         <thead><tr><th>Invoice #</th><th>Customer</th><th>Balance Due</th><th>Status</th></tr></thead>
@@ -612,6 +615,27 @@
     document.querySelectorAll('.period-panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById('panel-' + period).classList.add('active');
+  }
+
+  var paidView = 'ytd';
+  function togglePaidView() {
+    if (paidView === 'ytd') {
+      paidView = 'all';
+      document.getElementById('paid-value').textContent = '$5.64M';
+      document.getElementById('paid-label').textContent = 'Total Paid (All Time)';
+      document.getElementById('paid-note').textContent  = '4,022 invoices · Full history';
+      document.getElementById('inv-count').textContent  = '4,022';
+      document.getElementById('inv-note').textContent   = 'Avg $1,403 each';
+      document.getElementById('paid-toggle').textContent = '2026 YTD ↔';
+    } else {
+      paidView = 'ytd';
+      document.getElementById('paid-value').textContent = '$996K';
+      document.getElementById('paid-label').textContent = 'Total Paid (2026 YTD)';
+      document.getElementById('paid-note').textContent  = 'Jan 1 – Jun 12, 2026 · 232 invoices';
+      document.getElementById('inv-count').textContent  = '232';
+      document.getElementById('inv-note').textContent   = 'Avg $4,293 each';
+      document.getElementById('paid-toggle').textContent = 'ALL TIME ↔';
+    }
   }
 </script>
 
