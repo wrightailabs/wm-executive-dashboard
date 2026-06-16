@@ -202,9 +202,12 @@
       </div>
       <div class="kpi-card red">
         <div class="kpi-icon">📋</div>
-        <div class="kpi-value" style="color:var(--red)">$251,249</div>
-        <div class="kpi-label">Total Outstanding</div>
-        <div class="kpi-note">196 open invoices</div>
+        <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
+        <div id="out-label" class="kpi-label">Outstanding (2026)</div>
+        <div id="out-note" class="kpi-note">84 invoices from 2026</div>
+        <div style="margin-top:8px;">
+          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
+        </div>
       </div>
       <div class="kpi-card yellow">
         <div class="kpi-icon">⚠️</div>
@@ -238,9 +241,12 @@
       </div>
       <div class="kpi-card red">
         <div class="kpi-icon">📋</div>
-        <div class="kpi-value" style="color:var(--red)">$251,249</div>
-        <div class="kpi-label">Total Outstanding</div>
-        <div class="kpi-note">196 open invoices</div>
+        <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
+        <div id="out-label" class="kpi-label">Outstanding (2026)</div>
+        <div id="out-note" class="kpi-note">84 invoices from 2026</div>
+        <div style="margin-top:8px;">
+          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
+        </div>
       </div>
       <div class="kpi-card yellow">
         <div class="kpi-icon">⚠️</div>
@@ -274,9 +280,12 @@
       </div>
       <div class="kpi-card red">
         <div class="kpi-icon">📋</div>
-        <div class="kpi-value" style="color:var(--red)">$251,249</div>
-        <div class="kpi-label">Total Outstanding</div>
-        <div class="kpi-note">196 open invoices</div>
+        <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
+        <div id="out-label" class="kpi-label">Outstanding (2026)</div>
+        <div id="out-note" class="kpi-note">84 invoices from 2026</div>
+        <div style="margin-top:8px;">
+          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
+        </div>
       </div>
       <div class="kpi-card yellow">
         <div class="kpi-icon">⚠️</div>
@@ -310,9 +319,12 @@
       </div>
       <div class="kpi-card red">
         <div class="kpi-icon">📋</div>
-        <div class="kpi-value" style="color:var(--red)">$251,249</div>
-        <div class="kpi-label">Total Outstanding</div>
-        <div class="kpi-note">196 open invoices</div>
+        <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
+        <div id="out-label" class="kpi-label">Outstanding (2026)</div>
+        <div id="out-note" class="kpi-note">84 invoices from 2026</div>
+        <div style="margin-top:8px;">
+          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
+        </div>
       </div>
       <div class="kpi-card yellow">
         <div class="kpi-icon">⚠️</div>
@@ -349,9 +361,12 @@
       </div>
       <div class="kpi-card red">
         <div class="kpi-icon">📋</div>
-        <div class="kpi-value" style="color:var(--red)">$251,249</div>
-        <div class="kpi-label">Total Outstanding</div>
-        <div class="kpi-note">196 open invoices</div>
+        <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
+        <div id="out-label" class="kpi-label">Outstanding (2026)</div>
+        <div id="out-note" class="kpi-note">84 invoices from 2026</div>
+        <div style="margin-top:8px;">
+          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
+        </div>
       </div>
       <div class="kpi-card purple">
         <div class="kpi-icon">👥</div>
@@ -615,6 +630,24 @@
     document.querySelectorAll('.period-panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById('panel-' + period).classList.add('active');
+  }
+
+  var outView = 'ytd';
+  function toggleOutView() {
+    var btns = document.querySelectorAll('#out-toggle');
+    if (outView === 'ytd') {
+      outView = 'all';
+      document.querySelectorAll('#out-value').forEach(el => el.textContent = '$251,249');
+      document.querySelectorAll('#out-label').forEach(el => el.textContent = 'Outstanding (All Time)');
+      document.querySelectorAll('#out-note').forEach(el => el.textContent  = '196 invoices · 2024–2026');
+      btns.forEach(b => b.textContent = '2026 ONLY ↔');
+    } else {
+      outView = 'ytd';
+      document.querySelectorAll('#out-value').forEach(el => el.textContent = '$149K');
+      document.querySelectorAll('#out-label').forEach(el => el.textContent = 'Outstanding (2026)');
+      document.querySelectorAll('#out-note').forEach(el => el.textContent  = '84 invoices from 2026');
+      btns.forEach(b => b.textContent = 'ALL TIME ↔');
+    }
   }
 
   var paidView = 'ytd';
