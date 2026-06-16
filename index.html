@@ -152,9 +152,10 @@
       <div class="header-sub">Business Intelligence (BI) Report &nbsp;·&nbsp; Data through June 15, 2026 &nbsp;·&nbsp; Powered by Wright AI Labs</div>
     </div>
   </div>
-  <div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
     <div class="live-badge"><span class="live-dot"></span> Live Data</div>
-    <div style="font-size:11px;opacity:0.55;text-align:right;margin-top:4px;">Updated 6/15/2026</div>
+    <button id="global-toggle" onclick="toggleGlobalView()" style="background:var(--navy);border:2px solid rgba(255,255,255,.3);color:white;font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;letter-spacing:.5px;white-space:nowrap;">📅 2026 YTD &nbsp;|&nbsp; ALL TIME</button>
+    <div id="toggle-mode" style="font-size:10px;opacity:0.65;text-align:right;color:white;">Showing: 2026 YTD</div>
   </div>
 </div>
 
@@ -205,14 +206,12 @@
         <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
         <div id="out-label" class="kpi-label">Outstanding (2026)</div>
         <div id="out-note" class="kpi-note">84 invoices from 2026</div>
-        <div style="margin-top:8px;">
-          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
-        </div>
+
       </div>
       <div class="kpi-card yellow">
         <div class="kpi-icon">⚠️</div>
-        <div class="kpi-value" style="color:var(--yellow)">137</div>
-        <div class="kpi-label">Overdue Invoices</div>
+        <div id="overdue-value" class="kpi-value" style="color:var(--yellow)">37</div>
+        <div id="overdue-label" class="kpi-label">Overdue Invoices (2026)</div>
         <div class="kpi-note">$170,068 past due</div>
       </div>
     </div>
@@ -244,14 +243,12 @@
         <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
         <div id="out-label" class="kpi-label">Outstanding (2026)</div>
         <div id="out-note" class="kpi-note">84 invoices from 2026</div>
-        <div style="margin-top:8px;">
-          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
-        </div>
+
       </div>
       <div class="kpi-card yellow">
         <div class="kpi-icon">⚠️</div>
-        <div class="kpi-value" style="color:var(--yellow)">137</div>
-        <div class="kpi-label">Overdue Invoices</div>
+        <div id="overdue-value" class="kpi-value" style="color:var(--yellow)">37</div>
+        <div id="overdue-label" class="kpi-label">Overdue Invoices (2026)</div>
         <div class="kpi-note">$170,068 past due</div>
       </div>
     </div>
@@ -283,14 +280,12 @@
         <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
         <div id="out-label" class="kpi-label">Outstanding (2026)</div>
         <div id="out-note" class="kpi-note">84 invoices from 2026</div>
-        <div style="margin-top:8px;">
-          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
-        </div>
+
       </div>
       <div class="kpi-card yellow">
         <div class="kpi-icon">⚠️</div>
-        <div class="kpi-value" style="color:var(--yellow)">137</div>
-        <div class="kpi-label">Overdue Invoices</div>
+        <div id="overdue-value" class="kpi-value" style="color:var(--yellow)">37</div>
+        <div id="overdue-label" class="kpi-label">Overdue Invoices (2026)</div>
         <div class="kpi-note">$170,068 past due</div>
       </div>
     </div>
@@ -322,14 +317,12 @@
         <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
         <div id="out-label" class="kpi-label">Outstanding (2026)</div>
         <div id="out-note" class="kpi-note">84 invoices from 2026</div>
-        <div style="margin-top:8px;">
-          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
-        </div>
+
       </div>
       <div class="kpi-card yellow">
         <div class="kpi-icon">⚠️</div>
-        <div class="kpi-value" style="color:var(--yellow)">137</div>
-        <div class="kpi-label">Overdue Invoices</div>
+        <div id="overdue-value" class="kpi-value" style="color:var(--yellow)">37</div>
+        <div id="overdue-label" class="kpi-label">Overdue Invoices (2026)</div>
         <div class="kpi-note">$170,068 past due</div>
       </div>
     </div>
@@ -343,9 +336,7 @@
         <div id="paid-value" class="kpi-value" style="color:var(--green)">$996K</div>
         <div id="paid-label" class="kpi-label">Total Paid (2026 YTD)</div>
         <div id="paid-note" class="kpi-note">Jan 1 – Jun 12, 2026 · 232 invoices</div>
-        <div style="margin-top:8px;">
-          <button id="paid-toggle" onclick="togglePaidView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;">ALL TIME ↔</button>
-        </div>
+
       </div>
       <div class="kpi-card blue">
         <div class="kpi-icon">🧾</div>
@@ -364,9 +355,7 @@
         <div id="out-value" class="kpi-value" style="color:var(--red)">$149K</div>
         <div id="out-label" class="kpi-label">Outstanding (2026)</div>
         <div id="out-note" class="kpi-note">84 invoices from 2026</div>
-        <div style="margin-top:8px;">
-          <button onclick="toggleOutView()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;letter-spacing:.5px;" id="out-toggle">ALL TIME ↔</button>
-        </div>
+
       </div>
       <div class="kpi-card purple">
         <div class="kpi-icon">👥</div>
@@ -376,8 +365,8 @@
       </div>
       <div class="kpi-card yellow">
         <div class="kpi-icon">⚠️</div>
-        <div class="kpi-value" style="color:var(--yellow)">137</div>
-        <div class="kpi-label">Overdue Invoices</div>
+        <div id="overdue-value" class="kpi-value" style="color:var(--yellow)">37</div>
+        <div id="overdue-label" class="kpi-label">Overdue Invoices (2026)</div>
         <div class="kpi-note">$170,068 past due</div>
       </div>
     </div>
@@ -572,11 +561,11 @@
     </div>
     <div class="acc-body">
       <div class="job-stats">
-        <div class="job-stat"><div class="job-stat-val" style="color:var(--red)">196</div><div class="job-stat-lbl">Open Invoices</div></div>
-        <div class="job-stat"><div class="job-stat-val" style="color:var(--red)">$251K</div><div class="job-stat-lbl">Total Outstanding</div></div>
-        <div class="job-stat"><div class="job-stat-val" style="color:var(--orange)">137</div><div class="job-stat-lbl">Overdue</div></div>
-        <div class="job-stat"><div class="job-stat-val" style="color:var(--orange)">$170K</div><div class="job-stat-lbl">Past Due Amount</div></div>
-        <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">4,022</div><div class="job-stat-lbl">Paid Invoices</div></div>
+        <div class="job-stat"><div id="bot-open-val" class="job-stat-val" style="color:var(--red)">84</div><div id="bot-open-lbl" class="job-stat-lbl">Open Invoices (2026)</div></div>
+        <div class="job-stat"><div id="bot-out-val" class="job-stat-val" style="color:var(--red)">$149K</div><div id="bot-out-lbl" class="job-stat-lbl">Outstanding (2026)</div></div>
+        <div class="job-stat"><div id="bot-over-val" class="job-stat-val" style="color:var(--orange)">37</div><div id="bot-over-lbl" class="job-stat-lbl">Overdue (2026)</div></div>
+        <div class="job-stat"><div id="bot-pastdue-val" class="job-stat-val" style="color:var(--orange)">$83K</div><div id="bot-pastdue-lbl" class="job-stat-lbl">Past Due (2026)</div></div>
+        <div class="job-stat"><div id="bot-paid-cnt" class="job-stat-val" style="color:var(--green)">232</div><div id="bot-paid-lbl" class="job-stat-lbl">Paid (2026)</div></div>
         <div class="job-stat"><div class="job-stat-val" style="color:var(--green)">$996K</div><div class="job-stat-lbl">Collected (2026 YTD)</div></div>
       </div>
       <table class="data-table">
@@ -632,43 +621,54 @@
     document.getElementById('panel-' + period).classList.add('active');
   }
 
-  var outView = 'ytd';
-  function toggleOutView() {
-    var btns = document.querySelectorAll('#out-toggle');
-    if (outView === 'ytd') {
-      outView = 'all';
-      document.querySelectorAll('#out-value').forEach(el => el.textContent = '$251,249');
-      document.querySelectorAll('#out-label').forEach(el => el.textContent = 'Outstanding (All Time)');
-      document.querySelectorAll('#out-note').forEach(el => el.textContent  = '196 invoices · 2024–2026');
-      btns.forEach(b => b.textContent = '2026 ONLY ↔');
-    } else {
-      outView = 'ytd';
-      document.querySelectorAll('#out-value').forEach(el => el.textContent = '$149K');
-      document.querySelectorAll('#out-label').forEach(el => el.textContent = 'Outstanding (2026)');
-      document.querySelectorAll('#out-note').forEach(el => el.textContent  = '84 invoices from 2026');
-      btns.forEach(b => b.textContent = 'ALL TIME ↔');
-    }
-  }
+  var globalView = 'ytd';
 
-  var paidView = 'ytd';
-  function togglePaidView() {
-    if (paidView === 'ytd') {
-      paidView = 'all';
-      document.getElementById('paid-value').textContent = '$5.64M';
-      document.getElementById('paid-label').textContent = 'Total Paid (All Time)';
-      document.getElementById('paid-note').textContent  = '4,022 invoices · Full history';
-      document.getElementById('inv-count').textContent  = '4,022';
-      document.getElementById('inv-note').textContent   = 'Avg $1,403 each';
-      document.getElementById('paid-toggle').textContent = '2026 YTD ↔';
-    } else {
-      paidView = 'ytd';
-      document.getElementById('paid-value').textContent = '$996K';
-      document.getElementById('paid-label').textContent = 'Total Paid (2026 YTD)';
-      document.getElementById('paid-note').textContent  = 'Jan 1 – Jun 12, 2026 · 232 invoices';
-      document.getElementById('inv-count').textContent  = '232';
-      document.getElementById('inv-note').textContent   = 'Avg $4,293 each';
-      document.getElementById('paid-toggle').textContent = 'ALL TIME ↔';
+  var DATA = {
+    ytd: {
+      paidValue: '$996K',      paidLabel: 'Total Paid (2026 YTD)',   paidNote: 'Jan 1 – Jun 12, 2026 · 232 invoices',
+      invCount:  '232',        invNote:   'Avg $4,293 each',
+      outValue:  '$149K',      outLabel:  'Outstanding (2026)',       outNote:  '84 invoices from 2026',
+      overdueVal:'37',         overdueLabel:'Overdue Invoices (2026)',
+      botOpenVal:'84',         botOpenLbl: 'Open Invoices (2026)',
+      botOutVal: '$149K',      botOutLbl:  'Outstanding (2026)',
+      botOverVal:'37',         botOverLbl: 'Overdue (2026)',
+      botPastVal:'$83K',       botPastLbl: 'Past Due (2026)',
+      botPaidCnt:'232',        botPaidLbl: 'Paid (2026)',
+      mode: 'Showing: 2026 YTD'
+    },
+    all: {
+      paidValue: '$5.64M',     paidLabel: 'Total Paid (All Time)',    paidNote: '4,022 invoices · Full history',
+      invCount:  '4,022',      invNote:   'Avg $1,403 each',
+      outValue:  '$251,249',   outLabel:  'Outstanding (All Time)',   outNote:  '196 invoices · 2024–2026',
+      overdueVal:'137',        overdueLabel:'Overdue Invoices (All Time)',
+      botOpenVal:'196',        botOpenLbl: 'Open Invoices (All Time)',
+      botOutVal: '$251K',      botOutLbl:  'Outstanding (All Time)',
+      botOverVal:'137',        botOverLbl: 'Overdue (All Time)',
+      botPastVal:'$170K',      botPastLbl: 'Past Due (All Time)',
+      botPaidCnt:'4,022',      botPaidLbl: 'Paid (All Time)',
+      mode: 'Showing: All Time'
     }
+  };
+
+  function toggleGlobalView() {
+    globalView = globalView === 'ytd' ? 'all' : 'ytd';
+    var d = DATA[globalView];
+    var set = (id, val) => { var el = document.getElementById(id); if(el) el.textContent = val; };
+    var setAll = (id, val) => { document.querySelectorAll('#'+id).forEach(el => el.textContent = val); };
+
+    set('paid-value', d.paidValue);  set('paid-label', d.paidLabel);  set('paid-note', d.paidNote);
+    set('inv-count',  d.invCount);   set('inv-note',   d.invNote);
+    setAll('out-value',  d.outValue); setAll('out-label', d.outLabel); setAll('out-note', d.outNote);
+    setAll('overdue-value', d.overdueVal); setAll('overdue-label', d.overdueLabel);
+    set('bot-open-val', d.botOpenVal); set('bot-open-lbl', d.botOpenLbl);
+    set('bot-out-val',  d.botOutVal);  set('bot-out-lbl',  d.botOutLbl);
+    set('bot-over-val', d.botOverVal); set('bot-over-lbl', d.botOverLbl);
+    set('bot-pastdue-val', d.botPastVal); set('bot-pastdue-lbl', d.botPastLbl);
+    set('bot-paid-cnt', d.botPaidCnt); set('bot-paid-lbl', d.botPaidLbl);
+    set('toggle-mode', d.mode);
+
+    var btn = document.getElementById('global-toggle');
+    if(btn) btn.style.borderColor = globalView === 'ytd' ? 'rgba(255,255,255,.3)' : 'rgba(96,165,250,.8)';
   }
 </script>
 
